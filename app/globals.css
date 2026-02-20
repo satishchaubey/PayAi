@@ -1,0 +1,667 @@
+:root {
+  --bg: #f3f7ff;
+  --surface: rgba(255, 255, 255, 0.8);
+  --text: #10223a;
+  --muted: #4a678a;
+  --accent: #ff5d3d;
+  --accent-2: #1792ff;
+  --accent-3: #0fbe7f;
+  --border: rgba(16, 34, 58, 0.12);
+  --shadow: 0 16px 40px rgba(16, 34, 58, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(23, 146, 255, 0.25), transparent 34%),
+    radial-gradient(circle at 80% 10%, rgba(255, 93, 61, 0.2), transparent 30%),
+    radial-gradient(circle at 85% 75%, rgba(15, 190, 127, 0.18), transparent 34%),
+    var(--bg);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-main {
+  padding-top: 112px;
+}
+
+.app-header-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  padding: 10px 12px;
+}
+
+.app-header {
+  max-width: 1250px;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 1px solid rgba(16, 34, 58, 0.14);
+  backdrop-filter: blur(12px);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(245, 251, 255, 0.8));
+  box-shadow: 0 10px 24px rgba(16, 34, 58, 0.12);
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.header-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.brand {
+  font-weight: 900;
+  font-size: 1.08rem;
+  letter-spacing: -0.01em;
+  color: #123a5f;
+}
+
+.brand span {
+  color: #ea5100;
+}
+
+.menu-btn {
+  display: none;
+  width: 40px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(16, 34, 58, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 9px;
+}
+
+.menu-btn span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: #1b4f79;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-btn span + span {
+  margin-top: 5px;
+}
+
+.menu-btn.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-btn.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.app-nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  border-radius: 12px;
+  border: 1px solid rgba(16, 34, 58, 0.1);
+  background: rgba(255, 255, 255, 0.86);
+  padding: 6px;
+}
+
+.nav-link {
+  position: relative;
+  padding: 8px 11px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #3d5b7f;
+  border: 1px solid transparent;
+  transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+  isolation: isolate;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.nav-link.active {
+  color: #0a4f86;
+  background: linear-gradient(155deg, rgba(23, 146, 255, 0.24), rgba(23, 146, 255, 0.1));
+  border-color: rgba(23, 146, 255, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), 0 6px 14px rgba(23, 146, 255, 0.2);
+}
+
+.nav-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: rgba(23, 146, 255, 0.14);
+  border: 1px solid rgba(23, 146, 255, 0.2);
+  z-index: -1;
+}
+
+.route-chip {
+  min-width: 210px;
+  border-radius: 10px;
+  border: 1px solid rgba(16, 34, 58, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 10px;
+  display: grid;
+  gap: 1px;
+}
+
+.route-chip span {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #6b819f;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.route-chip strong {
+  font-size: 0.82rem;
+  color: #123250;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+.page-shell {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 34px 20px 72px;
+}
+
+.side-button {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  padding: 10px 12px;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(120deg, #ea5100, #ff9051);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: 0 10px 22px rgba(234, 81, 0, 0.28);
+}
+
+.side-button-second {
+  top: calc(50% + 52px);
+  background: linear-gradient(120deg, #0e6cc0, #35a0ff);
+  box-shadow: 0 10px 22px rgba(14, 108, 192, 0.28);
+}
+
+.hero {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.hero p {
+  margin: 0;
+  max-width: 720px;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.learning-hero {
+  margin-bottom: 8px;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(23, 146, 255, 0.14), transparent 38%),
+    radial-gradient(circle at 90% 90%, rgba(255, 93, 61, 0.12), transparent 40%),
+    var(--surface);
+}
+
+.learning-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.45rem, 3.6vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.learning-hero p {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.topic-card {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #17314f;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  overflow: hidden;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 1.08rem;
+}
+
+.card p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+button {
+  border: 0;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: linear-gradient(110deg, var(--accent), #ff8b37);
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+button.alt {
+  background: linear-gradient(110deg, var(--accent-2), #5ab4ff);
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.diagram {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 7px;
+  min-height: 140px;
+  justify-content: flex-start;
+}
+
+.queue {
+  display: flex;
+  gap: 7px;
+  min-height: 40px;
+  flex-wrap: wrap;
+}
+
+.line {
+  width: 100%;
+  border-top: 1px dashed var(--border);
+  margin: 10px 0;
+}
+
+.code {
+  font-family: "IBM Plex Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.84rem;
+  background: rgba(16, 34, 58, 0.06);
+  border-radius: 10px;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: #0b5f96;
+  font-weight: 700;
+  background: rgba(23, 146, 255, 0.13);
+  padding: 5px 9px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.runtime-shell {
+  padding: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.runtime-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.6fr);
+  gap: 14px;
+}
+
+.runtime-editor {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.runtime-editor h2 {
+  margin: 0 0 6px;
+}
+
+.flow-legend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.flow-legend span {
+  text-align: center;
+  padding: 5px 4px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--muted);
+}
+
+.flow-legend span.on {
+  background: rgba(23, 146, 255, 0.12);
+  color: #0b5f96;
+  border-color: rgba(23, 146, 255, 0.25);
+}
+
+.flow-rail {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(23, 146, 255, 0.24), rgba(255, 93, 61, 0.24));
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.flow-signal {
+  position: absolute;
+  top: -7px;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #ffd1bf 32%, #ff5d3d 68%);
+  box-shadow: 0 0 0 4px rgba(255, 93, 61, 0.18), 0 8px 16px rgba(16, 34, 58, 0.2);
+}
+
+.runtime-visuals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.runtime-box {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  min-height: 320px;
+}
+
+.runtime-box h3 {
+  margin: 0 0 8px;
+  font-size: 0.94rem;
+}
+
+.runtime-subhead {
+  margin: 8px 0 6px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.editor {
+  width: 100%;
+  min-height: 170px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  font-family: "IBM Plex Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.86rem;
+  padding: 12px;
+  color: var(--text);
+  resize: vertical;
+}
+
+.query-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.activity-line {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: #164872;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.console-box {
+  min-height: 140px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+  background: rgba(10, 34, 58, 0.92);
+}
+
+.console-line {
+  color: #a6f6d0;
+  font-family: "IBM Plex Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.speed-row {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.speed-row label {
+  font-size: 0.84rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.stack-controls {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
+.desktop-nav {
+  display: flex;
+}
+
+@media (max-width: 1024px) {
+  .app-main {
+    padding-top: 98px;
+  }
+
+  .route-chip {
+    min-width: 176px;
+  }
+
+  .nav-link {
+    font-size: 0.76rem;
+    padding: 7px 9px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    padding-top: 96px;
+  }
+
+  .app-header {
+    gap: 6px;
+  }
+
+  .header-top {
+    grid-template-columns: auto auto;
+    grid-template-areas:
+      "brand toggle"
+      "chip chip";
+    align-items: center;
+  }
+
+  .brand {
+    grid-area: brand;
+  }
+
+  .menu-btn {
+    grid-area: toggle;
+    display: inline-block;
+    justify-self: end;
+  }
+
+  .route-chip {
+    grid-area: chip;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: grid;
+    gap: 7px;
+    border-radius: 12px;
+    border: 1px solid rgba(16, 34, 58, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 8px;
+  }
+
+  .mobile-link {
+    border-radius: 10px;
+    border: 1px solid rgba(16, 34, 58, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 9px 10px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: #335a82;
+  }
+
+  .mobile-link.active {
+    border-color: rgba(23, 146, 255, 0.22);
+    background: rgba(23, 146, 255, 0.12);
+    color: #0d598f;
+  }
+
+  .page-shell {
+    padding: 24px 14px 64px;
+  }
+
+  .side-button {
+    top: auto;
+    bottom: 12px;
+    left: 12px;
+    transform: none;
+    border-radius: 10px;
+  }
+
+  .side-button-second {
+    top: auto;
+    bottom: 56px;
+  }
+
+  .runtime-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .runtime-visuals {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .stack-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .runtime-shell {
+    padding: 14px;
+  }
+}
