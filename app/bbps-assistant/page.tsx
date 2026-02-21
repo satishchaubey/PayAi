@@ -188,7 +188,8 @@ export default function BBPSAIPage() {
             continue;
           }
 
-          setContexts((prev) => [...prev, { id, name: file.name, source: "pdf", text: payload.text }]);
+          const text = payload.text;
+          setContexts((prev) => [...prev, { id, name: file.name, source: "pdf", text }]);
           setUploadMessage(`Added PDF context: ${file.name}`);
           continue;
         }
@@ -274,7 +275,7 @@ export default function BBPSAIPage() {
     }
   };
 
-  const useStarter = (text: string) => {
+  const applyStarter = (text: string) => {
     setInput(text);
   };
 
@@ -290,7 +291,7 @@ export default function BBPSAIPage() {
           <h2>Try These Queries</h2>
           <div className={styles.starters}>
             {starters.map((item) => (
-              <button key={item} onClick={() => useStarter(item)}>
+              <button key={item} onClick={() => applyStarter(item)}>
                 {item}
               </button>
             ))}

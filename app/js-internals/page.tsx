@@ -1,4 +1,25 @@
+import type { Metadata } from "next";
 import EventLoopVisualizer from "@/components/EventLoopVisualizer";
+import { absoluteUrl } from "@/app/seo";
+
+export const metadata: Metadata = {
+  title: "JavaScript Internals Lab",
+  description:
+    "Interactive JavaScript internals visualizer to understand call stack behavior, event loop timing, microtasks, macrotasks, and async execution.",
+  alternates: {
+    canonical: "/js-internals"
+  },
+  openGraph: {
+    title: "JavaScript Internals Lab | PayAi",
+    description: "Visual sandbox for mastering JavaScript runtime behavior and async flows.",
+    url: absoluteUrl("/js-internals")
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JavaScript Internals Lab | PayAi",
+    description: "Understand event loop and async execution with an interactive visual playground."
+  }
+};
 
 const topics = [
   "Call Stack Fundamentals",

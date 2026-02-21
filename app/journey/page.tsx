@@ -1,5 +1,26 @@
+import type { Metadata } from "next";
 import { IconCloudDemo } from "@/components/IconCloudDemo";
 import styles from "./journey.module.css";
+import { absoluteUrl } from "@/app/seo";
+
+export const metadata: Metadata = {
+  title: "Portfolio Journey",
+  description:
+    "Developer portfolio journey highlighting frontend, backend, blockchain, and AI integration experience with project and work history snapshots.",
+  alternates: {
+    canonical: "/journey"
+  },
+  openGraph: {
+    title: "Portfolio Journey | PayAi",
+    description: "Explore skills, experience, and project highlights behind the PayAi platform.",
+    url: absoluteUrl("/journey")
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio Journey | PayAi",
+    description: "Skills and engineering journey across payment systems, SaaS, and AI workflows."
+  }
+};
 
 const skills = {
   frontend: ["React.js", "Next.js (App Router)", "TypeScript", "Redux Toolkit", "Redux Thunk", "JavaScript (ES6+)"] ,
@@ -112,7 +133,7 @@ export default function JourneyPage() {
   return (
     <main className={styles.page}>
       <section className={styles.cloudSection}>
-        <h2>Skill Icon Cloud</h2>
+        <h2>Skill Cloud</h2>
         <IconCloudDemo />
       </section>
 

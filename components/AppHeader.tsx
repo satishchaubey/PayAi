@@ -9,7 +9,7 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/bbps-assistant", label: "BBPS Assistant" },
   { href: "/payment-flow", label: "Payment Flow" },
-  { href: "/js-internals", label: "JS Internals" },
+  { href: "/js-internals", label: "JS Playground" },
   { href: "/company-solutions", label: "Company Solution" },
   { href: "/journey", label: "Portfolio" }
 ];
@@ -18,7 +18,7 @@ function getRouteName(pathname: string) {
   if (pathname === "/") return "PayAi Landing";
   if (pathname === "/bbps-assistant") return "BBPS AI Assistant";
   if (pathname === "/payment-flow") return "Payment & Blockchain Flow";
-  if (pathname === "/js-internals") return "JavaScript Internals";
+  if (pathname === "/js-internals") return "JS Playground";
   if (pathname === "/company-solutions") return "Company Solution UI";
   if (pathname === "/journey") return "Satish Portfolio";
   return pathname.replaceAll("/", " ").trim() || "Home";
@@ -38,6 +38,7 @@ export default function AppHeader() {
       <div className="app-header">
         <div className="header-top">
           <motion.div
+            className="brand-block"
             initial={{ x: -42, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
@@ -45,6 +46,29 @@ export default function AppHeader() {
             <Link href="/" className="brand">
               <span>Pay</span>Ai
             </Link>
+            <p className="brand-sub">Payment Intelligence Suite</p>
+          </motion.div>
+
+          <motion.div
+            className="route-chip"
+            aria-live="polite"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.45, ease: "easeOut", delay: 0.12 }}
+          >
+            <span>Active Workspace</span>
+            <AnimatePresence mode="wait">
+              <motion.strong
+                key={pathname}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+              >
+                <i className="route-dot" aria-hidden="true" />
+                {routeName}
+              </motion.strong>
+            </AnimatePresence>
           </motion.div>
 
           <motion.div
@@ -64,35 +88,16 @@ export default function AppHeader() {
               <span />
             </button>
           </motion.div>
-
-          <motion.div
-            className="route-chip"
-            aria-live="polite"
-            initial={{ x: 42, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.45, ease: "easeOut", delay: 0.12 }}
-          >
-            <span>Current Route</span>
-            <AnimatePresence mode="wait">
-              <motion.strong
-                key={pathname}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-              >
-                {routeName}
-              </motion.strong>
-            </AnimatePresence>
-          </motion.div>
         </div>
 
-        <motion.nav
-          className="app-nav desktop-nav"
+        <motion.div
+          className="nav-shell desktop-nav"
           initial={{ scaleX: 0.84, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
           transition={{ duration: 0.45, ease: "easeOut", delay: 0.08 }}
         >
+          <span className="nav-caption">Navigate</span>
+          <nav className="app-nav" aria-label="Main navigation">
           {navItems.map((item, index) => {
             const active = pathname === item.href;
             return (
@@ -109,7 +114,8 @@ export default function AppHeader() {
               </motion.div>
             );
           })}
-        </motion.nav>
+          </nav>
+        </motion.div>
 
         <AnimatePresence>
           {menuOpen ? (

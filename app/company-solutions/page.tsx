@@ -57,7 +57,9 @@ export default function CompanySolutionsPage() {
       ease: "none"
     });
 
-    return () => tween.kill();
+    return () => {
+      tween.kill();
+    };
   }, []);
 
   const onDemoSubmit = async (data: DemoForm) => {

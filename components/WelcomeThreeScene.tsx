@@ -7,6 +7,32 @@ type WelcomeThreeSceneProps = {
   className?: string;
 };
 
+function buildLetter(pattern: string[], color: number) {
+  const group = new THREE.Group();
+  const block = new THREE.BoxGeometry(0.12, 0.12, 0.12);
+  const material = new THREE.MeshStandardMaterial({
+    color,
+    emissive: 0x0d2f7d,
+    emissiveIntensity: 0.65,
+    metalness: 0.2,
+    roughness: 0.34
+  });
+
+  const rows = pattern.length;
+  const cols = pattern[0]?.length ?? 0;
+
+  for (let y = 0; y < rows; y += 1) {
+    for (let x = 0; x < cols; x += 1) {
+      if (pattern[y][x] !== "1") continue;
+      const cube = new THREE.Mesh(block, material);
+      cube.position.set(x * 0.13 - (cols * 0.13) / 2, -(y * 0.13) + (rows * 0.13) / 2, 0);
+      group.add(cube);
+    }
+  }
+
+  return group;
+}
+
 export default function WelcomeThreeScene({ className }: WelcomeThreeSceneProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
 
@@ -15,7 +41,6 @@ export default function WelcomeThreeScene({ className }: WelcomeThreeSceneProps)
     if (!host) return;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0a2f73, 2.5, 8);
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(0, 0.2, 4.4);
@@ -38,38 +63,40 @@ export default function WelcomeThreeScene({ className }: WelcomeThreeSceneProps)
     rimLight.position.set(0, -0.5, 2.2);
     scene.add(rimLight);
 
-    const mat = new THREE.MeshPhysicalMaterial({
-      color: 0x66b7ff,
-      roughness: 0.1,
-      metalness: 0.08,
-      transmission: 0.45,
-      thickness: 0.9,
-      clearcoat: 1,
-      clearcoatRoughness: 0.15
-    });
-
-    const torus = new THREE.Mesh(new THREE.TorusKnotGeometry(0.95, 0.26, 220, 28), mat);
-    torus.position.set(-0.35, 0.1, 0);
-    torus.rotation.set(0.3, -0.6, 0.2);
-    scene.add(torus);
-
-    const blobA = new THREE.Mesh(new THREE.IcosahedronGeometry(0.56, 4), mat);
-    blobA.position.set(1.35, -0.42, 0.35);
-    scene.add(blobA);
-
-    const blobB = new THREE.Mesh(new THREE.IcosahedronGeometry(0.38, 3), mat);
-    blobB.position.set(1.72, 0.52, -0.25);
-    scene.add(blobB);
-
-    const plane = new THREE.Mesh(
-      new THREE.PlaneGeometry(8, 8),
-      new THREE.MeshBasicMaterial({ color: 0x1f57ad, transparent: true, opacity: 0.22 })
+    const aiGroup = new THREE.Group();
+    const letterA = buildLetter(
+      ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+      0x94d9ff
     );
-    plane.position.z = -2.2;
-    scene.add(plane);
+    const letterI = buildLetter(
+      ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
+      0x7cc0ff
+    );
+
+    letterA.position.x = -0.43;
+    letterI.position.x = 0.43;
+    aiGroup.add(letterA, letterI);
+    aiGroup.position.set(0.08, 0.1, 0.56);
+    aiGroup.rotation.set(0.18, -0.28, 0);
+    scene.add(aiGroup);
+
+    const aiHaloMaterial = new THREE.MeshBasicMaterial({
+      color: 0x7ec8ff,
+      transparent: true,
+      opacity: 0.24,
+      side: THREE.DoubleSide
+    });
+    const aiHalo = new THREE.Mesh(new THREE.RingGeometry(0.58, 0.85, 90), aiHaloMaterial);
+    aiHalo.position.set(0.08, 0.08, 0.34);
+    scene.add(aiHalo);
+
+    const aiLight = new THREE.PointLight(0x9ad9ff, 2.2, 9);
+    aiLight.position.set(0.1, 0.2, 1.4);
+    scene.add(aiLight);
 
     let frame = 0;
     let active = true;
+    let rafId = 0;
 
     const resize = () => {
       if (!host) return;
@@ -85,30 +112,35 @@ export default function WelcomeThreeScene({ className }: WelcomeThreeSceneProps)
       frame += 1;
       const t = frame * 0.012;
 
-      torus.rotation.x += 0.003;
-      torus.rotation.y += 0.006;
-      torus.position.y = 0.1 + Math.sin(t * 0.8) * 0.1;
-
-      blobA.rotation.x += 0.004;
-      blobA.rotation.y -= 0.005;
-      blobA.position.x = 1.35 + Math.sin(t * 1.1) * 0.12;
-      blobA.position.y = -0.42 + Math.cos(t * 0.9) * 0.08;
-
-      blobB.rotation.x -= 0.005;
-      blobB.rotation.z += 0.004;
-      blobB.position.y = 0.52 + Math.sin(t * 1.3) * 0.08;
+      aiGroup.position.y = 0.12 + Math.sin(t * 1.25) * 0.08;
+      aiGroup.rotation.y = -0.22 + Math.sin(t * 0.7) * 0.34;
+      aiGroup.rotation.x = 0.16 + Math.cos(t * 0.65) * 0.1;
+      const aiScale = 1 + Math.sin(t * 2.2) * 0.06;
+      aiGroup.scale.set(aiScale, aiScale, aiScale);
+      aiHalo.rotation.z += 0.012;
+      aiHaloMaterial.opacity = 0.16 + (Math.sin(t * 1.6) + 1) * 0.08;
 
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
 
     window.addEventListener("resize", resize);
     resize();
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
 
     return () => {
       active = false;
+      cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
+      scene.traverse((object) => {
+        if (!(object instanceof THREE.Mesh)) return;
+        object.geometry.dispose();
+        if (Array.isArray(object.material)) {
+          for (const material of object.material) material.dispose();
+          return;
+        }
+        object.material.dispose();
+      });
       renderer.dispose();
       scene.clear();
       if (renderer.domElement.parentElement === host) {
