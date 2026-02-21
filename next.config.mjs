@@ -6,7 +6,7 @@ const nextConfig = {
     DEMO_TO_EMAIL: "satishchaubey02@gmail.com",
     RESEND_FROM_EMAIL: "onboarding@resend.dev",
     SARVAM_API_KEY:"sk_l6htjdb5_jqEKgnKc6Ry2SfZwzgtLYqwM",
-    SARVAM_MODEL: process.env.SARVAM_MODEL
+    SARVAM_MODEL: "sarvam-m"
   },
   images: {
     remotePatterns: [
