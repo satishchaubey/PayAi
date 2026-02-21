@@ -51,7 +51,7 @@ export async function POST(request: Request) {
   const from = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from,
       to,
       subject: `Demo Request from ${company}`,
@@ -59,8 +59,13 @@ export async function POST(request: Request) {
       text: `Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\nMessage:\n${message}`
     });
 
+    if (result.error) {
+      return NextResponse.json({ error: result.error.message || "Resend rejected the email request" }, { status: 502 });
+    }
+
     return NextResponse.json({ message: "Demo request sent successfully" });
-  } catch {
-    return NextResponse.json({ error: "Failed to send email via Resend" }, { status: 500 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Failed to send email via Resend";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
