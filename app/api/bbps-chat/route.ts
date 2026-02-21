@@ -87,6 +87,14 @@ function fallbackAnswer(query: string) {
   return `For your BBPS query "${query}", use this flow: bill fetch + validation, payment authorization, transaction reference mapping, status polling, reconciliation, refund/reversal orchestration, and customer communication lifecycle.`;
 }
 
+function envSetupHint() {
+  if (process.env.NODE_ENV === "production") {
+    return "Set SARVAM_API_KEY in Vercel Project Settings -> Environment Variables and redeploy for full real-time GenAI output.";
+  }
+
+  return "Set SARVAM_API_KEY in .env.local and restart server for full real-time GenAI output.";
+}
+
 export async function POST(request: Request) {
   let payload: Payload;
 
@@ -127,14 +135,16 @@ export async function POST(request: Request) {
 
     if (!hasKey) {
       return NextResponse.json({
-        answer:
-          `${fallbackAnswer(lastUser)}\n\nSet SARVAM_API_KEY in .env.local and restart server for full real-time GenAI output.`
+        answer: `${fallbackAnswer(lastUser)}\n\n${envSetupHint()}`
       });
     }
 
     return NextResponse.json({ error: "Sarvam returned empty response" }, { status: 502 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown Sarvam provider error";
-    return NextResponse.json({ error: message }, { status: 502 });
+    return NextResponse.json({
+      answer: `${fallbackAnswer(lastUser)}\n\nSarvam provider error: ${message}\n\n${envSetupHint()}`,
+      providerError: message
+    });
   }
 }
