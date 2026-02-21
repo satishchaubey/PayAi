@@ -35,7 +35,7 @@ a {
 }
 
 .app-main {
-  padding-top: 112px;
+  padding-top: 160px;
 }
 
 .app-header-wrap {
@@ -608,7 +608,7 @@ button.ghost {
 
 @media (max-width: 1024px) {
   .app-main {
-    padding-top: 98px;
+    padding-top: 110px;
   }
 
   .route-chip {
@@ -623,7 +623,7 @@ button.ghost {
 
 @media (max-width: 768px) {
   .app-main {
-    padding-top: 96px;
+    padding-top: 106px;
   }
 
   .app-header {

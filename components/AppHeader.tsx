@@ -33,6 +33,10 @@ export default function AppHeader() {
     setMenuOpen(false);
   }, [pathname]);
 
+  if (pathname === "/bbps-assistant") {
+    return null;
+  }
+
   return (
     <header className="app-header-wrap">
       <div className="app-header">

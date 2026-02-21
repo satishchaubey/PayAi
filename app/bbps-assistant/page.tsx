@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./bbps.module.css";
 
@@ -281,114 +282,146 @@ export default function BBPSAIPage() {
 
   return (
     <main className={styles.page}>
-      <section className={styles.hero}>
-        <h1>AI Assistant</h1>
-        <p>Real-time GenAI conversations for Bharat Bill Payment System queries with PDF/Image context.</p>
-      </section>
+      <div className={styles.pageShell}>
+        <aside className={styles.navSidebar}>
+          <Link href="/" className={styles.sidebarBrand}>
+            <span>Pay</span>Ai
+          </Link>
+          <p>BBPS Workspace</p>
 
-      <section className={styles.layout}>
-        <aside className={styles.side}>
-          <h2>Try These Queries</h2>
-          <div className={styles.starters}>
-            {starters.map((item) => (
-              <button key={item} onClick={() => applyStarter(item)}>
-                {item}
-              </button>
-            ))}
-          </div>
+          <nav className={styles.sidebarNav} aria-label="BBPS navigation">
+            <Link href="/" className={styles.sidebarLink}>
+              Home
+            </Link>
+            <Link href="/bbps-assistant" className={`${styles.sidebarLink} ${styles.sidebarLinkActive}`}>
+              BBPS Assistant
+            </Link>
+            <Link href="/payment-flow" className={styles.sidebarLink}>
+              Payment Flow
+            </Link>
+            <Link href="/js-internals" className={styles.sidebarLink}>
+              JS Playground
+            </Link>
+            <Link href="/company-solutions" className={styles.sidebarLink}>
+              Company Solution
+            </Link>
+            <Link href="/journey" className={styles.sidebarLink}>
+              Portfolio
+            </Link>
+          </nav>
         </aside>
 
-        <section className={styles.chatPanel}>
-          <div className={styles.uploadBar}>
-            <div className={styles.iconActions}>
-              <button type="button" className={styles.uploadIconBtn} onClick={openPdfPicker} disabled={uploading}>
-                <span className={styles.iconWrap} aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="1.7"/>
-                    <path d="M14 2v6h6" stroke="currentColor" strokeWidth="1.7"/>
-                    <path d="M8 14h8M8 18h6" stroke="currentColor" strokeWidth="1.7"/>
-                  </svg>
-                </span>
-                PDF
-              </button>
+        <div className={styles.contentArea}>
+          <section className={styles.hero}>
+            <h1>AI Assistant</h1>
+            <p>Real-time GenAI conversations for Bharat Bill Payment System queries with PDF/Image context.</p>
+          </section>
 
-              <button type="button" className={styles.uploadIconBtn} onClick={openImagePicker} disabled={uploading}>
-                <span className={styles.iconWrap} aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.7"/>
-                    <circle cx="9" cy="10" r="1.7" stroke="currentColor" strokeWidth="1.7"/>
-                    <path d="M6 16l4-4 3 3 2-2 3 3" stroke="currentColor" strokeWidth="1.7"/>
-                  </svg>
-                </span>
-                Image
-              </button>
-            </div>
-
-            <input
-              ref={pdfInputRef}
-              type="file"
-              accept="application/pdf"
-              multiple
-              onChange={onUpload}
-              disabled={uploading}
-              className={styles.hiddenInput}
-            />
-            <input
-              ref={imageInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={onUpload}
-              disabled={uploading}
-              className={styles.hiddenInput}
-            />
-            <p>{uploadMessage}</p>
-          </div>
-          <div className={styles.sessionRow}>
-            <span className={styles.sessionBadge}>
-              {sessionStartedAt
-                ? `Session resets in ${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, "0")}`
-                : "Session timer starts on first message"}
-            </span>
-            <button type="button" className={styles.clearBtn} onClick={() => clearConversation("Conversation cleared.")}>
-              Clear Chat
-            </button>
-          </div>
-
-          {contexts.length > 0 ? (
-            <div className={styles.contexts}>
-              {contexts.map((ctx) => (
-                <div key={ctx.id} className={styles.contextItem}>
-                  <span>{ctx.source.toUpperCase()}: {ctx.name}</span>
-                  <button onClick={() => removeContext(ctx.id)}>Remove</button>
-                </div>
-              ))}
-            </div>
-          ) : null}
-
-          <div className={styles.chatBody} ref={chatBodyRef}>
-            {messages.map((msg, idx) => (
-              <div key={`${msg.role}-${idx}`} className={msg.role === "user" ? styles.userMsg : styles.aiMsg}>
-                <strong>{msg.role === "user" ? "You" : "BBPS AI"}</strong>
-                <p>{msg.content}</p>
+          <section className={styles.layout}>
+            <aside className={styles.side}>
+              <h2>Try These Queries</h2>
+              <div className={styles.starters}>
+                {starters.map((item) => (
+                  <button key={item} onClick={() => applyStarter(item)}>
+                    {item}
+                  </button>
+                ))}
               </div>
-            ))}
-            {loading ? <p className={styles.typing}>Thinking...</p> : null}
-          </div>
+            </aside>
 
-          <form className={styles.form} onSubmit={sendMessage}>
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about BBPS flow, failures, reconciliation, chargeback, settlement..."
-              rows={3}
-            />
-            <button type="submit" disabled={!canSend}>
-              Send
-            </button>
-          </form>
-        </section>
-      </section>
+            <section className={styles.chatPanel}>
+              <div className={styles.uploadBar}>
+                <div className={styles.iconActions}>
+                  <button type="button" className={styles.uploadIconBtn} onClick={openPdfPicker} disabled={uploading}>
+                    <span className={styles.iconWrap} aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M7 2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="1.7"/>
+                        <path d="M14 2v6h6" stroke="currentColor" strokeWidth="1.7"/>
+                        <path d="M8 14h8M8 18h6" stroke="currentColor" strokeWidth="1.7"/>
+                      </svg>
+                    </span>
+                    PDF
+                  </button>
+
+                  <button type="button" className={styles.uploadIconBtn} onClick={openImagePicker} disabled={uploading}>
+                    <span className={styles.iconWrap} aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.7"/>
+                        <circle cx="9" cy="10" r="1.7" stroke="currentColor" strokeWidth="1.7"/>
+                        <path d="M6 16l4-4 3 3 2-2 3 3" stroke="currentColor" strokeWidth="1.7"/>
+                      </svg>
+                    </span>
+                    Image
+                  </button>
+                </div>
+
+                <input
+                  ref={pdfInputRef}
+                  type="file"
+                  accept="application/pdf"
+                  multiple
+                  onChange={onUpload}
+                  disabled={uploading}
+                  className={styles.hiddenInput}
+                />
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={onUpload}
+                  disabled={uploading}
+                  className={styles.hiddenInput}
+                />
+                <p>{uploadMessage}</p>
+              </div>
+              <div className={styles.sessionRow}>
+                <span className={styles.sessionBadge}>
+                  {sessionStartedAt
+                    ? `Session resets in ${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, "0")}`
+                    : "Session timer starts on first message"}
+                </span>
+                <button type="button" className={styles.clearBtn} onClick={() => clearConversation("Conversation cleared.")}>
+                  Clear Chat
+                </button>
+              </div>
+
+              {contexts.length > 0 ? (
+                <div className={styles.contexts}>
+                  {contexts.map((ctx) => (
+                    <div key={ctx.id} className={styles.contextItem}>
+                      <span>{ctx.source.toUpperCase()}: {ctx.name}</span>
+                      <button onClick={() => removeContext(ctx.id)}>Remove</button>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className={styles.chatBody} ref={chatBodyRef}>
+                {messages.map((msg, idx) => (
+                  <div key={`${msg.role}-${idx}`} className={msg.role === "user" ? styles.userMsg : styles.aiMsg}>
+                    <strong>{msg.role === "user" ? "You" : "BBPS AI"}</strong>
+                    <p>{msg.content}</p>
+                  </div>
+                ))}
+                {loading ? <p className={styles.typing}>Thinking...</p> : null}
+              </div>
+
+              <form className={styles.form} onSubmit={sendMessage}>
+                <textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask about BBPS flow, failures, reconciliation, chargeback, settlement..."
+                  rows={3}
+                />
+                <button type="submit" disabled={!canSend}>
+                  Send
+                </button>
+              </form>
+            </section>
+          </section>
+        </div>
+      </div>
     </main>
   );
 }

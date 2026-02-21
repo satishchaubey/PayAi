@@ -69,17 +69,36 @@ const bbpsRight = [
   "Generate Receipt + Notify User"
 ];
 
+const WELCOME_SEEN_KEY = "payai_home_welcome_seen_v1";
+
 export default function LandingPage() {
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    try {
+      const hasSeenWelcome = localStorage.getItem(WELCOME_SEEN_KEY) === "1";
+      if (!hasSeenWelcome) {
+        setShowWelcome(true);
+        localStorage.setItem(WELCOME_SEEN_KEY, "1");
+      }
+    } catch {
+      // If storage is blocked, fall back to showing welcome once for this render.
+      setShowWelcome(true);
+    } finally {
+      setIsReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!showWelcome) return;
     const timer = window.setTimeout(() => {
       setShowWelcome(false);
     }, 3000);
 
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [showWelcome]);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -168,6 +187,8 @@ export default function LandingPage() {
 
     return () => ctx.revert();
   }, [showWelcome]);
+
+  if (!isReady) return null;
 
   if (showWelcome) {
     return (
