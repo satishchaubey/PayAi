@@ -38,6 +38,14 @@ a {
   padding-top: 160px;
 }
 
+body.route-bbps-assistant .app-main {
+  padding-top: 0;
+}
+
+body.route-bbps-assistant .app-header-wrap {
+  display: none;
+}
+
 .app-header-wrap {
   position: fixed;
   top: 0;

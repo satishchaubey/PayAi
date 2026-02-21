@@ -33,6 +33,19 @@ export default function AppHeader() {
     setMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const className = "route-bbps-assistant";
+    if (pathname === "/bbps-assistant") {
+      document.body.classList.add(className);
+    } else {
+      document.body.classList.remove(className);
+    }
+
+    return () => {
+      document.body.classList.remove(className);
+    };
+  }, [pathname]);
+
   if (pathname === "/bbps-assistant") {
     return null;
   }
