@@ -42,7 +42,7 @@
 }
 
 .chromeTop {
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -54,7 +54,7 @@
   padding: 0 16px;
   gap: 14px;
   background: linear-gradient(180deg, rgba(165, 205, 255, 0.2), rgba(132, 186, 255, 0.06));
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px); */
 }
 
 .chromeDots {
@@ -70,9 +70,9 @@
 }
 
 .chromeBar {
-  height: 14px;
+  /* height: 14px;
   border-radius: 999px;
-  border: 1px solid rgba(220, 240, 255, 0.48);
+  border: 1px solid rgba(220, 240, 255, 0.48); */
 }
 
 .chromeMenu {
